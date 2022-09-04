@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "cCngFileName"
+Attribute VB_Name = "cInputFileName"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -11,11 +11,9 @@ Option Explicit
 
 Dim m_sWorkbookName As String
 Dim m_sWorksheetName As String
-Dim m_sTargetFolderPath As String
 Dim m_lStartRow As Long
-Dim m_lChangeFileNameCol As Long
-Dim m_lCurFileNameCol As Long
-Dim m_lResultCol As Long
+Dim m_lInputCol As Long
+Dim m_sTargetFolderPath As String
 
 '--------------------------------------------------------------------------------
 '@brief :
@@ -61,25 +59,12 @@ End Property
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Public Property Get lChangeFileNameCol() As Long
-    lChangeFileNameCol = m_lChangeFileNameCol
+Public Property Get lInputCol() As Long
+    lInputCol = m_lInputCol
 End Property
 
-Public Property Let lChangeFileNameCol(ByVal vlChangeFileNameCol As Long)
-    m_lChangeFileNameCol = vlChangeFileNameCol
-End Property
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Property Get lCurFileNameCol() As Long
-    lCurFileNameCol = m_lCurFileNameCol
-End Property
-
-Public Property Let lCurFileNameCol(ByVal vlCurFileNameCol As Long)
-    m_lCurFileNameCol = vlCurFileNameCol
+Public Property Let lInputCol(ByVal vlInputCol As Long)
+    m_lInputCol = vlInputCol
 End Property
 
 '--------------------------------------------------------------------------------
@@ -100,29 +85,7 @@ End Property
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Public Property Get lResultCol() As Long
-    lResultCol = m_lResultCol
-End Property
-
-Public Property Let lResultCol(ByVal vlResultCol As Long)
-    m_lResultCol = vlResultCol
-End Property
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Private Sub Class_Initialize()
-    Call Init
-End Sub
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Sub Init()
+Private Sub Class_initialize()
     m_sWorkbookName = ""
     m_sWorksheetName = ""
     m_lStartRow = 0
@@ -134,21 +97,10 @@ End Sub
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Public Sub CngFileName()
+Public Sub InputFolderName()
     Dim wsTarget As Worksheet
+    Dim sDirBuf As String
     Dim lCurRow As Long
-    Dim lEndRow As Long
-    Dim sTargetFilePath As String
-    Dim sTargetFileName As String
-    Dim sChangeFileName As String
-    Dim oFileSystemObject As Object
-    Dim InputResult As cInputResult
-    
-    Set InputResult = New cInputResult
-    With InputResult
-        .sWorksheetName = sWorksheetName
-        .lTargetCol = lResultCol
-    End With
     
     If sWorkbookName = "" Then
         Set wsTarget = ThisWorkbook.Worksheets(sWorksheetName)
@@ -159,27 +111,12 @@ Public Sub CngFileName()
         Exit Sub
     End If
     
-    lEndRow = wsTarget.Cells(wsTarget.Rows.Count, lCurFileNameCol).End(xlUp).Row
-    Set oFileSystemObject = CreateObject("Scripting.FileSystemObject")
+    sDirBuf = Dir(sTargetFolderPath & "\" & "*.*")
+    lCurRow = lStartRow
+    Do While sDirBuf <> ""
+        wsTarget.Cells(lCurRow, lInputCol).Value = sDirBuf
+        sDirBuf = Dir()
+        lCurRow = lCurRow + 1
+    Loop
     
-    If m_lResultCol = 0 Then
-    End If
-    
-    For lCurRow = lStartRow To lEndRow
-        sTargetFileName = wsTarget.Cells(lCurRow, lCurFileNameCol)
-        sTargetFilePath = sTargetFolderPath & "\" & sTargetFileName
-        sChangeFileName = wsTarget.Cells(lCurRow, lChangeFileNameCol)
-        
-        If Not sChangeFileName Like "*.*" Then
-            Call InputResult.InputResult(lCurRow, "not extension")
-        ElseIf Not oFileSystemObject.FileExists(sTargetFilePath) Then
-            Call InputResult.InputResult(lCurRow, "not exit")
-        ElseIf sTargetFileName = sChangeFileName Then
-            Call InputResult.InputResult(lCurRow, "not necessary")
-        Else
-            oFileSystemObject.GetFile(sTargetFilePath).Name = sChangeFileName
-            Call InputResult.InputResult(lCurRow, "")
-        End If
-    Next lCurRow
 End Sub
-
