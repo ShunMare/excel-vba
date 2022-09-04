@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "cInputFileName"
+Attribute VB_Name = "cInputResult"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -12,8 +12,7 @@ Option Explicit
 Dim m_sWorkbookName As String
 Dim m_sWorksheetName As String
 Dim m_lStartRow As Long
-Dim m_lInputCol As Long
-Dim m_sTargetFolderPath As String
+Dim m_lTargetCol As Long
 
 '--------------------------------------------------------------------------------
 '@brief :
@@ -36,7 +35,7 @@ End Property
 Public Property Get sWorksheetName() As String
     sWorksheetName = m_sWorksheetName
 End Property
-
+    
 Public Property Let sWorksheetName(ByVal vsWorksheetName As String)
     m_sWorksheetName = vsWorksheetName
 End Property
@@ -59,25 +58,12 @@ End Property
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Public Property Get lInputCol() As Long
-    lInputCol = m_lInputCol
+Public Property Get lTargetCol() As Long
+    lTargetCol = m_lTargetCol
 End Property
 
-Public Property Let lInputCol(ByVal vlInputCol As Long)
-    m_lInputCol = vlInputCol
-End Property
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Property Get sTargetFolderPath() As String
-    sTargetFolderPath = m_sTargetFolderPath
-End Property
-
-Public Property Let sTargetFolderPath(ByVal vsTargetFolderPath As String)
-    m_sTargetFolderPath = vsTargetFolderPath
+Public Property Let lTargetCol(ByVal vlTargetCol As Long)
+    m_lTargetCol = vlTargetCol
 End Property
 
 '--------------------------------------------------------------------------------
@@ -85,20 +71,9 @@ End Property
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Private Sub Class_Initialize()
-    Call Init
-End Sub
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Sub Init()
+Private Sub Class_initialize()
     m_sWorkbookName = ""
     m_sWorksheetName = ""
-    m_lStartRow = 0
-    m_sTargetFolderPath = ""
 End Sub
 
 '--------------------------------------------------------------------------------
@@ -106,26 +81,21 @@ End Sub
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Public Sub InputFolderName()
-    Dim wsTarget As Worksheet
-    Dim sDirBuf As String
-    Dim lCurRow As Long
+Public Function InputResult(ByVal vlTargetRow As Long, ByVal vsMsg As String)
+    Dim rTarget As Range
     
     If sWorkbookName = "" Then
-        Set wsTarget = ThisWorkbook.Worksheets(sWorksheetName)
-    ElseIf wsTarget <> "" Then
-        Set wsTarget = Workbooks(sWorkbookName).Worksheets(sWorksheetName)
+        Set rTarget = ThisWorkbook.Worksheets(sWorksheetName).Cells(vlTargetRow, lTargetCol)
+    ElseIf sWorkbookName <> "" Then
+        Set rTarget = Workbooks(sWorkbookName).Worksheets(sWorksheetName).Cells(vlTargetRow, lTargetCol)
     Else
         MsgBox "err"
-        Exit Sub
+        Exit Function
     End If
     
-    sDirBuf = Dir(sTargetFolderPath & "\" & "*.*")
-    lCurRow = lStartRow
-    Do While sDirBuf <> ""
-        wsTarget.Cells(lCurRow, lInputCol).Value = sDirBuf
-        sDirBuf = Dir()
-        lCurRow = lCurRow + 1
-    Loop
-    
-End Sub
+    If vsMsg <> "" Then
+        rTarget = vsMsg
+    Else
+        rTarget = "TRUE"
+    End If
+End Function

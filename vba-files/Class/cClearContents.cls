@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "cInputFolderPath"
+Attribute VB_Name = "cClearContents"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -11,7 +11,10 @@ Option Explicit
 
 Dim m_sWorkbookName As String
 Dim m_sWorksheetName As String
-Dim m_sCellName As String
+Dim m_lStartRow As Long
+Dim m_lStartCol As Long
+Dim m_lEndCol As Long
+Dim m_lKeyCol As Long
 
 '--------------------------------------------------------------------------------
 '@brief :
@@ -44,12 +47,12 @@ End Property
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Public Property Get sCellName() As String
-    sCellName = m_sCellName
+Public Property Get lStartRow() As Long
+    lStartRow = m_lStartRow
 End Property
 
-Public Property Let sCellName(ByVal vsCellName As String)
-    m_sCellName = vsCellName
+Public Property Let lStartRow(ByVal vlStartRow As Long)
+    m_lStartRow = vlStartRow
 End Property
 
 '--------------------------------------------------------------------------------
@@ -57,19 +60,48 @@ End Property
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Private Sub Class_Initialize()
-    Call Init
-End Sub
+Public Property Get lKeyCol() As Long
+    lKeyCol = m_lKeyCol
+End Property
+
+Public Property Let lKeyCol(ByVal vlKeyCol As Long)
+    m_lKeyCol = vlKeyCol
+End Property
 
 '--------------------------------------------------------------------------------
 '@brief :
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Public Sub Init()
+Public Property Get lStartCol() As Long
+    lStartCol = m_lStartCol
+End Property
+
+Public Property Let lStartCol(ByVal vlStartCol As Long)
+    m_lStartCol = vlStartCol
+End Property
+
+'--------------------------------------------------------------------------------
+'@brief :
+'@param :
+'@return:
+'--------------------------------------------------------------------------------
+Public Property Get lEndCol() As Long
+    lEndCol = m_lEndCol
+End Property
+
+Public Property Let lEndCol(ByVal vlEndCol As Long)
+    m_lEndCol = vlEndCol
+End Property
+
+'--------------------------------------------------------------------------------
+'@brief :
+'@param :
+'@return:
+'--------------------------------------------------------------------------------
+Private Sub Class_initialize()
     m_sWorkbookName = ""
     m_sWorksheetName = ""
-    m_sCellName = ""
 End Sub
 
 '--------------------------------------------------------------------------------
@@ -77,37 +109,25 @@ End Sub
 '@param :
 '@return:
 '--------------------------------------------------------------------------------
-Public Function GetFolderPath()
-    Dim objFileDialog As Object
-    Dim sFolderPath As String
-    
-    Set objFileDialog = Application.FileDialog(msoFileDialogFolderPicker)
-    
-    If objFileDialog.Show = True Then
-        sFolderPath = objFileDialog.SelectedItems(1)
-    Else
-        ''do nothing
-    End If
-    Set objFileDialog = Nothing
-    GetFolderPath = sFolderPath
-End Function
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Sub InputFolderPath()
+Public Function ClearRangeContents()
+    Dim wsTarget As Worksheet
     Dim rTarget As Range
+    Dim lEndRow As Long
     
     If sWorkbookName = "" Then
-        Set rTarget = ThisWorkbook.Worksheets(sWorksheetName).Range(sCellName)
+        Set wsTarget = ThisWorkbook.Worksheets(sWorksheetName)
     ElseIf sWorkbookName <> "" Then
-        Set rTarget = Workbooks(sWorkbookName).Worksheets(sWorksheetName).Range(sCellName)
+        Set wsTarget = Workbooks(sWorkbookName).Worksheets(sWorksheetName)
     Else
         MsgBox "err"
-        Exit Sub
+        Exit Function
     End If
-    rTarget = GetFolderPath
-End Sub
+    lEndRow = wsTarget.Cells(wsTarget.Rows.Count, lKeyCol).End(xlUp).Row
+    
+    With wsTarget
+        Set rTarget = .Range(.Cells(lStartRow, lStartCol), .Cells(lEndRow, lEndCol))
+        rTarget.ClearContents
+    End With
 
+
+End Function
