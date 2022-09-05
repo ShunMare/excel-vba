@@ -14,7 +14,7 @@ Private Enum ComponentType
     CLASS_MODULE = 2
     USER_FORM = 3
 End Enum
- 
+
 Public Sub ExportVBAFiles()
     Dim oVBAComponent As Object
     Dim sExportPath As String
@@ -23,7 +23,7 @@ Public Sub ExportVBAFiles()
     If Dir(sExportPath, vbDirectory) = "" Then
         Call MkDir(sExportPath)
     End If
-     
+
     If Dir(sExportPath & "\bas", vbDirectory) = "" Then
         Call MkDir(sExportPath & "\bas")
     End If
@@ -33,7 +33,7 @@ Public Sub ExportVBAFiles()
     If Dir(sExportPath & "\frm", vbDirectory) = "" Then
         Call MkDir(sExportPath & "\frm")
     End If
- 
+
     For Each oVBAComponent In ThisWorkbook.VBProject.VBComponents
         Select Case oVBAComponent.Type
         Case STANDARD_MODULE

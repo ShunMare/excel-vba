@@ -13,6 +13,7 @@ Private Const M_L_START_ROW As Long = 2
 Private Const M_L_MEMBER_COL As Long = 1
 Private Const M_L_FORM_COL As Long = 2
 Private Const M_L_PROPERTY_COL As Long = 3
+Private Const M_S_CODE_FILE_NAME As string = "CreatePropertyCode.txt"
 Private Const M_S_PROPERTY_NAME As String = "{$property_name}"
 Private Const M_S_PROPERTY_FORM As String = "{$property_form}"
 Private Const M_S_INIT_CONTENT As String = "{$init_content}"
@@ -108,7 +109,7 @@ Public Sub btnCreatePropertyCode_Click()
     Dim sTmpCode As String
     
     lEndRow = Me.Cells(Me.Rows.Count, M_L_MEMBER_COL).End(xlUp).Row
-    Open ThisWorkbook.Path & "CreatePropertyCode.txt" For Output As #1
+    Open ThisWorkbook.Path & M_S_CODE_FILE_NAME For Output As #1
     'property format
     For lCurRow = M_L_START_ROW To lEndRow
         sPropertyName = Replace(Me.Cells(lCurRow, M_L_MEMBER_COL), "m_", "")
@@ -161,3 +162,32 @@ Public Sub btnCreatePropertyCode_Click()
     Close #1
 End Sub
 
+'--------------------------------------------------------------------------------
+'@brief : click btnOpen
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Public Sub btnOpen_Click()
+    Dim oWscriptShell As Object
+    set oWscriptShell = CreateObject("Wscript.Shell")
+    oWscriptShell.Run ThisWorkbook.path & M_S_CODE_FILE_NAME ,3
+End Sub
+
+'--------------------------------------------------------------------------------
+'@brief : click btnClear
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Public Sub btnClear_Click()
+    Dim ClearContents As New cClearContents
+    Set ClearContents = New cClearContents
+    
+    With ClearContents
+        .sWorksheetName = Me.Name
+        .lStartRow = M_L_START_ROW
+        .lStartCol = M_L_MEMBER_COL
+        .lEndCol = M_L_PROPERTY_COL
+        .lKeyCol = M_L_MEMBER_COL
+        Call .ClearRangeContents
+    End With
+End Sub
