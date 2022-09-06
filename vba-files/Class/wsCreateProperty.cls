@@ -13,7 +13,7 @@ Private Const M_L_START_ROW As Long = 2
 Private Const M_L_MEMBER_COL As Long = 1
 Private Const M_L_FORM_COL As Long = 2
 Private Const M_L_PROPERTY_COL As Long = 3
-Private Const M_S_CODE_FILE_NAME As string = "CreatePropertyCode.txt"
+Private Const M_S_CODE_FILE_NAME As String = "CreatePropertyCode.txt"
 Private Const M_S_PROPERTY_NAME As String = "{$property_name}"
 Private Const M_S_PROPERTY_FORM As String = "{$property_form}"
 Private Const M_S_INIT_CONTENT As String = "{$init_content}"
@@ -169,8 +169,8 @@ End Sub
 '--------------------------------------------------------------------------------
 Public Sub btnOpen_Click()
     Dim oWscriptShell As Object
-    set oWscriptShell = CreateObject("Wscript.Shell")
-    oWscriptShell.Run ThisWorkbook.path & M_S_CODE_FILE_NAME ,3
+    Set oWscriptShell = CreateObject("Wscript.Shell")
+    oWscriptShell.Run ThisWorkbook.Path & M_S_CODE_FILE_NAME, 3
 End Sub
 
 '--------------------------------------------------------------------------------

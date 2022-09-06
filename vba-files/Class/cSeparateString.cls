@@ -205,12 +205,7 @@ End Function
 '--------------------------------------------------------------------------------
 Public Sub SeparateString()
     Dim wsTarget As Worksheet
-    Dim lCurRow As Long
     Dim lEndRow As Long
-    Dim lFrontPso As Long
-    Dim lRearPso As Long
-    Dim lTargetStrLen As Long
-    Dim sOriginal As String
     
     If Not checkMyValue Then
         Exit Sub
@@ -227,14 +222,51 @@ Public Sub SeparateString()
     
     lEndRow = wsTarget.Cells(wsTarget.Rows.Count, lTargetCol).End(xlUp).Row
     If E_SEPARATE_STRING.NORMAL = m_lSeparateType Then
-        'coming soon Split("123,xx,yy" , ",")
+        Call SeparateStringNormal(wsTarget, lEndRow)
     ElseIf E_SEPARATE_STRING.BETWEEN = m_lSeparateType Then
-        For lCurRow = lStartRow To lEndRow
-            sOriginal = wsTarget.Cells(lCurRow, lTargetCol)
-            lFrontPso = InStr(sOriginal, sFrontSeparateKey) + Len(sFrontSeparateKey)
-            lRearPso = InStr(sOriginal, sRearSeparateKey)
-            lTargetStrLen = lRearPso - (lFrontPso - 1)
-            wsTarget.Cells(lCurRow, lInputCol) = Mid(sOriginal, lFrontPso, lTargetStrLen)
-        Next lCurRow
+        Call SeparateStringBetween(wsTarget, lEndRow)
     End If
+End Sub
+
+'--------------------------------------------------------------------------------
+'@brief : separate string normal
+'@param : vwsTarget
+'@param : vlEndRow
+'@return: NULL
+'--------------------------------------------------------------------------------
+Private Sub SeparateStringNormal(ByVal vwsTarget As Worksheet, ByVal vlEndRow As Long)
+    Dim lCurRow As Long
+    Dim sOriginal As String
+    Dim vArray As Variant
+    Dim lCurRow As Long
+    Dim lCntArray As Long
+
+    For lCurRow = lStartRow To vlEndRow
+        vArray = Split(Cells(lCurRow, lTargetCol), sSeparateKey)
+        For lCntArray = LBound(vArray) To UBound(vArray)
+            Cells(lCurRow, lInputCol + lCntArray + 1) = vArray(lCntArray)
+        Next
+    Next lCurRow
+End Sub
+
+'--------------------------------------------------------------------------------
+'@brief : separate string between
+'@param : vwsTarget
+'@param : vlEndRow
+'@return: NULL
+'--------------------------------------------------------------------------------
+Private Sub SeparateStringBetween(ByVal vwsTarget As Worksheet, ByVal vlEndRow As Long)
+    Dim lCurRow As Long
+    Dim lFrontPso As Long
+    Dim lRearPso As Long
+    Dim lTargetStrLen As Long
+    Dim sOriginal As String
+    
+    For lCurRow = lStartRow To vlEndRow
+        sOriginal = vwsTarget.Cells(lCurRow, lTargetCol)
+        lFrontPso = InStr(sOriginal, sFrontSeparateKey) + Len(sFrontSeparateKey)
+        lRearPso = InStr(sOriginal, sRearSeparateKey)
+        lTargetStrLen = lRearPso - (lFrontPso - 1)
+        vwsTarget.Cells(lCurRow, lInputCol) = Mid(sOriginal, lFrontPso, lTargetStrLen)
+    Next lCurRow
 End Sub
