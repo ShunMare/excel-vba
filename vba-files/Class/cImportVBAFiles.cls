@@ -9,6 +9,11 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+'--------------------------------------------------------------------------------
+'@brief : import VBA files
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
 Public Sub ImportVBAFiles()
     Dim oVBAComponent As Object
     Dim sImportPath As String
@@ -31,7 +36,7 @@ Public Sub ImportVBAFiles()
     If Dir(sImportPath & "\frm", vbDirectory) = "" Then
         Call MkDir(sImportPath & "\frm")
     End If
- 
+
     Set oFileSystemObject = CreateObject("Scripting.FileSystemObject")
     Set oTargetFile = CreateObject("Scripting.FileSystemObject")
     

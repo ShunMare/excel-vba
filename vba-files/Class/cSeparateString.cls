@@ -199,9 +199,9 @@ Private Function checkMyValue()
 End Function
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : separate string
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub SeparateString()
     Dim wsTarget As Worksheet

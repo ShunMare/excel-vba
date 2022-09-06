@@ -15,6 +15,11 @@ Private Enum ComponentType
     USER_FORM = 3
 End Enum
 
+'--------------------------------------------------------------------------------
+'@brief : export VBA files
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
 Public Sub ExportVBAFiles()
     Dim oVBAComponent As Object
     Dim sExportPath As String
