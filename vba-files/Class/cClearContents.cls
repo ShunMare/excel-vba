@@ -17,97 +17,134 @@ Dim m_lEndCol As Long
 Dim m_lKeyCol As Long
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : getter letter sWorkbookName 
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get sWorkbookName() As String
-    sWorkbookName = m_sWorkbookName
+Public Property Get sWorkbookName () As String
+    sWorkbookName  = m_sWorkbookName 
 End Property
 
-Public Property Let sWorkbookName(ByVal vsWorkbookName As String)
-    m_sWorkbookName = vsWorkbookName
-End Property
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Property Get sWorksheetName() As String
-    sWorksheetName = m_sWorksheetName
-End Property
-
-Public Property Let sWorksheetName(ByVal vsWorksheetName As String)
-    m_sWorksheetName = vsWorksheetName
+Public Property Let sWorkbookName (ByVal vsWorkbookName  As String)
+    m_sWorkbookName  = vsWorkbookName 
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : getter letter sWorksheetName 
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get lStartRow() As Long
-    lStartRow = m_lStartRow
+Public Property Get sWorksheetName () As String
+    sWorksheetName  = m_sWorksheetName 
 End Property
 
-Public Property Let lStartRow(ByVal vlStartRow As Long)
-    m_lStartRow = vlStartRow
-End Property
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Property Get lKeyCol() As Long
-    lKeyCol = m_lKeyCol
-End Property
-
-Public Property Let lKeyCol(ByVal vlKeyCol As Long)
-    m_lKeyCol = vlKeyCol
+Public Property Let sWorksheetName (ByVal vsWorksheetName  As String)
+    m_sWorksheetName  = vsWorksheetName 
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : getter letter lStartRow 
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get lStartCol() As Long
-    lStartCol = m_lStartCol
+Public Property Get lStartRow () As Long
+    lStartRow  = m_lStartRow 
 End Property
 
-Public Property Let lStartCol(ByVal vlStartCol As Long)
-    m_lStartCol = vlStartCol
-End Property
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Property Get lEndCol() As Long
-    lEndCol = m_lEndCol
-End Property
-
-Public Property Let lEndCol(ByVal vlEndCol As Long)
-    m_lEndCol = vlEndCol
+Public Property Let lStartRow (ByVal vlStartRow  As Long)
+    m_lStartRow  = vlStartRow 
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : getter letter lStartCol 
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Public Property Get lStartCol () As Long
+    lStartCol  = m_lStartCol 
+End Property
+
+Public Property Let lStartCol (ByVal vlStartCol  As Long)
+    m_lStartCol  = vlStartCol 
+End Property
+
+'--------------------------------------------------------------------------------
+'@brief : getter letter lEndCol 
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Public Property Get lEndCol () As Long
+    lEndCol  = m_lEndCol 
+End Property
+
+Public Property Let lEndCol (ByVal vlEndCol  As Long)
+    m_lEndCol  = vlEndCol 
+End Property
+
+'--------------------------------------------------------------------------------
+'@brief : getter letter lKeyCol 
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Public Property Get lKeyCol () As Long
+    lKeyCol  = m_lKeyCol 
+End Property
+
+Public Property Let lKeyCol (ByVal vlKeyCol  As Long)
+    m_lKeyCol  = vlKeyCol 
+End Property
+
+'--------------------------------------------------------------------------------
+'@brief : initialize
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
 Private Sub Class_initialize()
-    m_sWorkbookName = ""
-    m_sWorksheetName = ""
+    m_sWorkbookName  = ""
+    m_sWorksheetName  = ""
+    m_lStartRow  = 0
+    m_lStartCol  = 0
+    m_lEndCol  = 0
+    m_lKeyCol  = 0
 End Sub
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : check my value
+'@param : NULL
+'@return: True, False
+'--------------------------------------------------------------------------------
+Private Function checkMyValue()
+    If "" = m_sWorkbookName  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If "" = m_sWorksheetName  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If 0 = m_lStartRow  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If 0 = m_lStartCol  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If 0 = m_lEndCol  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If 0 = m_lKeyCol  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    checkMyValue = True
+End Function
+
+'--------------------------------------------------------------------------------
+'@brief : clear range contents
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
 Public Function ClearRangeContents()
     Dim wsTarget As Worksheet
@@ -128,6 +165,4 @@ Public Function ClearRangeContents()
         Set rTarget = .Range(.Cells(lStartRow, lStartCol), .Cells(lEndRow, lEndCol))
         rTarget.ClearContents
     End With
-
-
 End Function

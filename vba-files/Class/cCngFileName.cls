@@ -18,112 +18,152 @@ Dim m_lCurFileNameCol As Long
 Dim m_lResultCol As Long
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : getter letter sWorkbookName 
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get sWorkbookName() As String
-    sWorkbookName = m_sWorkbookName
+Public Property Get sWorkbookName () As String
+    sWorkbookName  = m_sWorkbookName 
 End Property
 
-Public Property Let sWorkbookName(ByVal vsWorkbookName As String)
-    m_sWorkbookName = vsWorkbookName
-End Property
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Property Get sWorksheetName() As String
-    sWorksheetName = m_sWorksheetName
-End Property
-
-Public Property Let sWorksheetName(ByVal vsWorksheetName As String)
-    m_sWorksheetName = vsWorksheetName
+Public Property Let sWorkbookName (ByVal vsWorkbookName  As String)
+    m_sWorkbookName  = vsWorkbookName 
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : getter letter sWorksheetName 
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get lStartRow() As Long
-    lStartRow = m_lStartRow
+Public Property Get sWorksheetName () As String
+    sWorksheetName  = m_sWorksheetName 
 End Property
 
-Public Property Let lStartRow(ByVal vlStartRow As Long)
-    m_lStartRow = vlStartRow
-End Property
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Property Get lChangeFileNameCol() As Long
-    lChangeFileNameCol = m_lChangeFileNameCol
-End Property
-
-Public Property Let lChangeFileNameCol(ByVal vlChangeFileNameCol As Long)
-    m_lChangeFileNameCol = vlChangeFileNameCol
+Public Property Let sWorksheetName (ByVal vsWorksheetName  As String)
+    m_sWorksheetName  = vsWorksheetName 
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : getter letter sTargetFolderPath 
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get lCurFileNameCol() As Long
-    lCurFileNameCol = m_lCurFileNameCol
+Public Property Get sTargetFolderPath () As String
+    sTargetFolderPath  = m_sTargetFolderPath 
 End Property
 
-Public Property Let lCurFileNameCol(ByVal vlCurFileNameCol As Long)
-    m_lCurFileNameCol = vlCurFileNameCol
-End Property
-
-'--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
-'--------------------------------------------------------------------------------
-Public Property Get sTargetFolderPath() As String
-    sTargetFolderPath = m_sTargetFolderPath
-End Property
-
-Public Property Let sTargetFolderPath(ByVal vsTargetFolderPath As String)
-    m_sTargetFolderPath = vsTargetFolderPath
+Public Property Let sTargetFolderPath (ByVal vsTargetFolderPath  As String)
+    m_sTargetFolderPath  = vsTargetFolderPath 
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : getter letter lStartRow 
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get lResultCol() As Long
-    lResultCol = m_lResultCol
+Public Property Get lStartRow () As Long
+    lStartRow  = m_lStartRow 
 End Property
 
-Public Property Let lResultCol(ByVal vlResultCol As Long)
-    m_lResultCol = vlResultCol
+Public Property Let lStartRow (ByVal vlStartRow  As Long)
+    m_lStartRow  = vlStartRow 
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : getter letter lChangeFileNameCol 
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Public Property Get lChangeFileNameCol () As Long
+    lChangeFileNameCol  = m_lChangeFileNameCol 
+End Property
+
+Public Property Let lChangeFileNameCol (ByVal vlChangeFileNameCol  As Long)
+    m_lChangeFileNameCol  = vlChangeFileNameCol 
+End Property
+
+'--------------------------------------------------------------------------------
+'@brief : getter letter lCurFileNameCol 
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Public Property Get lCurFileNameCol () As Long
+    lCurFileNameCol  = m_lCurFileNameCol 
+End Property
+
+Public Property Let lCurFileNameCol (ByVal vlCurFileNameCol  As Long)
+    m_lCurFileNameCol  = vlCurFileNameCol 
+End Property
+
+'--------------------------------------------------------------------------------
+'@brief : getter letter lResultCol 
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Public Property Get lResultCol () As Long
+    lResultCol  = m_lResultCol 
+End Property
+
+Public Property Let lResultCol (ByVal vlResultCol  As Long)
+    m_lResultCol  = vlResultCol 
+End Property
+
+'--------------------------------------------------------------------------------
+'@brief : initialize
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
 Private Sub Class_initialize()
-    m_sWorkbookName = ""
-    m_sWorksheetName = ""
-    m_lStartRow = 0
-    m_sTargetFolderPath = ""
+    m_sWorkbookName  = ""
+    m_sWorksheetName  = ""
+    m_sTargetFolderPath  = ""
+    m_lStartRow  = 0
+    m_lChangeFileNameCol  = 0
+    m_lCurFileNameCol  = 0
+    m_lResultCol  = 0
 End Sub
 
 '--------------------------------------------------------------------------------
-'@brief :
-'@param :
-'@return:
+'@brief : check my value
+'@param : NULL
+'@return: True, False
+'--------------------------------------------------------------------------------
+Private Function checkMyValue()
+    If "" = m_sWorkbookName  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If "" = m_sWorksheetName  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If "" = m_sTargetFolderPath  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If 0 = m_lStartRow  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If 0 = m_lChangeFileNameCol  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If 0 = m_lCurFileNameCol  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    If 0 = m_lResultCol  Then
+        checkMyValue = False
+        Exit Function
+    End If
+    checkMyValue = True
+End Function
+
+'--------------------------------------------------------------------------------
+'@brief : change file name
+'@param : NULL
+'@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub CngFileName()
     Dim wsTarget As Worksheet
