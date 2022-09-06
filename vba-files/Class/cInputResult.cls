@@ -15,55 +15,55 @@ Dim m_lStartRow As Long
 Dim m_lTargetCol As Long
 
 '--------------------------------------------------------------------------------
-'@brief : getter letter sWorkbookName 
+'@brief : getter letter sWorkbookName
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get sWorkbookName () As String
-    sWorkbookName  = m_sWorkbookName 
+Public Property Get sWorkbookName() As String
+    sWorkbookName = m_sWorkbookName
 End Property
 
-Public Property Let sWorkbookName (ByVal vsWorkbookName  As String)
-    m_sWorkbookName  = vsWorkbookName 
+Public Property Let sWorkbookName(ByVal vsWorkbookName As String)
+    m_sWorkbookName = vsWorkbookName
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief : getter letter sWorksheetName 
+'@brief : getter letter sWorksheetName
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get sWorksheetName () As String
-    sWorksheetName  = m_sWorksheetName 
+Public Property Get sWorksheetName() As String
+    sWorksheetName = m_sWorksheetName
 End Property
 
-Public Property Let sWorksheetName (ByVal vsWorksheetName  As String)
-    m_sWorksheetName  = vsWorksheetName 
+Public Property Let sWorksheetName(ByVal vsWorksheetName As String)
+    m_sWorksheetName = vsWorksheetName
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief : getter letter lStartRow 
+'@brief : getter letter lStartRow
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get lStartRow () As Long
-    lStartRow  = m_lStartRow 
+Public Property Get lStartRow() As Long
+    lStartRow = m_lStartRow
 End Property
 
-Public Property Let lStartRow (ByVal vlStartRow  As Long)
-    m_lStartRow  = vlStartRow 
+Public Property Let lStartRow(ByVal vlStartRow As Long)
+    m_lStartRow = vlStartRow
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief : getter letter lTargetCol 
+'@brief : getter letter lTargetCol
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get lTargetCol () As Long
-    lTargetCol  = m_lTargetCol 
+Public Property Get lTargetCol() As Long
+    lTargetCol = m_lTargetCol
 End Property
 
-Public Property Let lTargetCol (ByVal vlTargetCol  As Long)
-    m_lTargetCol  = vlTargetCol 
+Public Property Let lTargetCol(ByVal vlTargetCol As Long)
+    m_lTargetCol = vlTargetCol
 End Property
 
 '--------------------------------------------------------------------------------
@@ -72,10 +72,10 @@ End Property
 '@return: NULL
 '--------------------------------------------------------------------------------
 Private Sub Class_initialize()
-    m_sWorkbookName  = ""
-    m_sWorksheetName  = ""
-    m_lStartRow  = 0
-    m_lTargetCol  = 0
+    m_sWorkbookName = ""
+    m_sWorksheetName = ""
+    m_lStartRow = 0
+    m_lTargetCol = 0
 End Sub
 
 '--------------------------------------------------------------------------------
@@ -84,19 +84,19 @@ End Sub
 '@return: True, False
 '--------------------------------------------------------------------------------
 Private Function checkMyValue()
-    If "" = m_sWorkbookName  Then
+    If "" = m_sWorkbookName Then
         checkMyValue = False
         Exit Function
     End If
-    If "" = m_sWorksheetName  Then
+    If "" = m_sWorksheetName Then
         checkMyValue = False
         Exit Function
     End If
-    If 0 = m_lStartRow  Then
+    If 0 = m_lStartRow Then
         checkMyValue = False
         Exit Function
     End If
-    If 0 = m_lTargetCol  Then
+    If 0 = m_lTargetCol Then
         checkMyValue = False
         Exit Function
     End If

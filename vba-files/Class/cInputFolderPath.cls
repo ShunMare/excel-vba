@@ -14,42 +14,42 @@ Dim m_sWorksheetName As String
 Dim m_sCellName As String
 
 '--------------------------------------------------------------------------------
-'@brief : getter letter sWorkbookName 
+'@brief : getter letter sWorkbookName
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get sWorkbookName () As String
-    sWorkbookName  = m_sWorkbookName 
+Public Property Get sWorkbookName() As String
+    sWorkbookName = m_sWorkbookName
 End Property
 
-Public Property Let sWorkbookName (ByVal vsWorkbookName  As String)
-    m_sWorkbookName  = vsWorkbookName 
+Public Property Let sWorkbookName(ByVal vsWorkbookName As String)
+    m_sWorkbookName = vsWorkbookName
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief : getter letter sWorksheetName 
+'@brief : getter letter sWorksheetName
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get sWorksheetName () As String
-    sWorksheetName  = m_sWorksheetName 
+Public Property Get sWorksheetName() As String
+    sWorksheetName = m_sWorksheetName
 End Property
 
-Public Property Let sWorksheetName (ByVal vsWorksheetName  As String)
-    m_sWorksheetName  = vsWorksheetName 
+Public Property Let sWorksheetName(ByVal vsWorksheetName As String)
+    m_sWorksheetName = vsWorksheetName
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief : getter letter sCellName 
+'@brief : getter letter sCellName
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get sCellName () As String
-    sCellName  = m_sCellName 
+Public Property Get sCellName() As String
+    sCellName = m_sCellName
 End Property
 
-Public Property Let sCellName (ByVal vsCellName  As String)
-    m_sCellName  = vsCellName 
+Public Property Let sCellName(ByVal vsCellName As String)
+    m_sCellName = vsCellName
 End Property
 
 '--------------------------------------------------------------------------------
@@ -58,9 +58,9 @@ End Property
 '@return: NULL
 '--------------------------------------------------------------------------------
 Private Sub Class_initialize()
-    m_sWorkbookName  = ""
-    m_sWorksheetName  = ""
-    m_sCellName  = ""
+    m_sWorkbookName = ""
+    m_sWorksheetName = ""
+    m_sCellName = ""
 End Sub
 
 '--------------------------------------------------------------------------------
@@ -69,15 +69,15 @@ End Sub
 '@return: True, False
 '--------------------------------------------------------------------------------
 Private Function checkMyValue()
-    If "" = m_sWorkbookName  Then
+    If "" = m_sWorkbookName Then
         checkMyValue = False
         Exit Function
     End If
-    If "" = m_sWorksheetName  Then
+    If "" = m_sWorksheetName Then
         checkMyValue = False
         Exit Function
     End If
-    If "" = m_sCellName  Then
+    If "" = m_sCellName Then
         checkMyValue = False
         Exit Function
     End If
