@@ -265,7 +265,7 @@ Private Sub SeparateStringBetween(ByVal vwsTarget As Worksheet, ByVal vlEndRow A
     For lCurRow = lStartRow To vlEndRow
         sOriginal = vwsTarget.Cells(lCurRow, lTargetCol)
         lFrontPso = InStr(sOriginal, sFrontSeparateKey) + Len(sFrontSeparateKey)
-        lRearPso = InStr(sOriginal, sRearSeparateKey)
+        lRearPso = InStr(sOriginal, sRearSeparateKey) - 1
         lTargetStrLen = lRearPso - (lFrontPso - 1)
         vwsTarget.Cells(lCurRow, lInputCol) = Mid(sOriginal, lFrontPso, lTargetStrLen)
     Next lCurRow
