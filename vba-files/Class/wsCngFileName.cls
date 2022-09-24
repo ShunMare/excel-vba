@@ -9,10 +9,30 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 Option Explicit
 
-Private Const M_L_START_ROW = 2
-Private Const M_L_CURRENT_FILE_NAME_COL = 1
-Private Const M_L_CNG_FILE_NAME_COL = 2
-Private Const M_L_RESULT_COL = 3
+Private Const M_L_START_ROW As Long = 2
+Private Const M_L_CURRENT_FILE_NAME_COL As Long = 1
+Private Const M_L_CNG_FILE_NAME_COL As Long = 2
+Private Const M_L_RESULT_COL As Long = 3
+
+Private m_siChgFileName As cSheetInfo
+
+'--------------------------------------------------------------------------------
+'@brief : init
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Private Sub init()
+    Set m_siChgFileName = New cSheetInfo
+    With m_siChgFileName
+        .sWorksheetName = G_S_CNG_FILE_NAME
+        Call .SetSheetInfo
+        .lStartRow = M_L_START_ROW
+        .lStartCol = M_L_CURRENT_FILE_NAME_COL
+        .lEndCol = M_L_RESULT_COL
+        .lKeyCol = M_L_CURRENT_FILE_NAME_COL
+        Call .SetRowAndColInfo
+    End With
+End Sub
 
 '--------------------------------------------------------------------------------
 '@brief : click btnInputFolderPath
@@ -20,13 +40,12 @@ Private Const M_L_RESULT_COL = 3
 '@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub btnInputFolderPath_Click()
-    Dim InputFolderPath As cInputFolderPath
-    Set InputFolderPath = New cInputFolderPath
+    Call init
     
-    With InputFolderPath
-        .sWorksheetName = G_S_CNG_FILE_NAME
+    Dim FolderPathInputter As New cFolderPathInputter
+    With FolderPathInputter
         .sCellName = G_S_TARGET_FOLDER_PATTH
-        Call .InputFolderPath
+        Call .InputFolderPath(m_siChgFileName)
     End With
 End Sub
 
@@ -36,15 +55,17 @@ End Sub
 '@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub btnInputFileName_Click()
-    Dim InputFileName As New cInputFileName
-    Set InputFileName = New cInputFileName
+    Call init
     
-    With InputFileName
-        .sWorksheetName = Me.Name
-        .lStartRow = M_L_START_ROW
-        .lInputCol = M_L_CURRENT_FILE_NAME_COL
+    With m_siChgFileName
+        .lTargetCol = M_L_CURRENT_FILE_NAME_COL
+        .SetRowAndColInfo
+    End With
+    
+    Dim FileNameInputter As New cFileNameInputter
+    With FileNameInputter
         .sTargetFolderPath = Range(G_S_TARGET_FOLDER_PATTH)
-        Call .InputFolderName
+        Call .InputFolderName(m_siChgFileName)
     End With
 End Sub
 
@@ -54,17 +75,14 @@ End Sub
 '@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub btnCngFileName_Click()
-    Dim CngFileName As New cCngFileName
-    Set CngFileName = New cCngFileName
+    Call init
     
-    With CngFileName
-        .sWorksheetName = Me.Name
-        .lStartRow = M_L_START_ROW
+    Dim FileNameChanger As New cFileNameChanger
+    With FileNameChanger
         .lCurFileNameCol = M_L_CURRENT_FILE_NAME_COL
         .lChangeFileNameCol = M_L_CNG_FILE_NAME_COL
-        .lResultCol = M_L_RESULT_COL
         .sTargetFolderPath = Range(G_S_TARGET_FOLDER_PATTH)
-        Call .CngFileName
+        Call .CngFileName(m_siChgFileName)
     End With
 End Sub
 
@@ -74,15 +92,10 @@ End Sub
 '@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub btnClear_Click()
-    Dim ClearContents As New cClearContents
-    Set ClearContents = New cClearContents
-    
-    With ClearContents
-        .sWorksheetName = Me.Name
-        .lStartRow = M_L_START_ROW
-        .lStartCol = M_L_CURRENT_FILE_NAME_COL
-        .lEndCol = M_L_RESULT_COL
-        .lKeyCol = M_L_CURRENT_FILE_NAME_COL
-        Call .ClearRangeContents
+    Call init
+
+    Dim RangeClearer As New cRangeClearer
+    With RangeClearer
+        Call .ClearRangeContents(m_siChgFileName)
     End With
 End Sub
