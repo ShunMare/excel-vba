@@ -1,4 +1,4 @@
-Attribute VB_Name = "basConst"
+Attribute VB_Name = "bConst"
 Option Explicit
 
 Public Enum E_SEPARATE_STRING

@@ -79,17 +79,39 @@ Private Const M_S_GAS_PROPERTY_FORMAT As String = _
 Private Const M_S_GAS_CLASS_INIT_FORMAT As String = ""
 Private Const M_S_GAS_PROPERTY_CHECK_FORMAT As String = ""
 
+Private m_siCreateProperty As cSheetInfo
+
+'--------------------------------------------------------------------------------
+'@brief : init
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Private Sub init()
+    Set m_siCreateProperty = New cSheetInfo
+    With m_siCreateProperty
+        .sWorksheetName = G_S_CNG_FILE_NAME
+        Call .SetSheetInfo
+        .lStartRow = M_L_START_ROW
+        .lStartCol = M_L_MEMBER_COL
+        .lEndCol = M_L_PROPERTY_COL
+        .lKeyCol = M_L_MEMBER_COL
+        Call .SetRowAndColInfo
+    End With
+End Sub
+
 '--------------------------------------------------------------------------------
 '@brief : click btnSeparateString
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub btnSeparateString_Click()
-    Dim replaceWords    As cReplaceWords
-    Dim SeparateString  As cSeparateString
+    Dim WordReplacer    As cWordReplacer
+    Dim WordSeparater   As cWordSeparater
     Dim lCurRow         As Long
     Dim lEndRow         As Long
     Dim sTarget         As String
+    
+    Call init
     
     lEndRow = Me.Cells(Me.Rows.Count, M_L_MEMBER_COL).End(xlUp).Row
     For lCurRow = M_L_START_ROW To lEndRow
@@ -105,27 +127,18 @@ Public Sub btnSeparateString_Click()
         End If
     Next lCurRow
     
-    Set replaceWords = New cReplaceWords
-    With replaceWords
-        .sWorksheetName = G_S_CREATE_PROPERTY_NAME
-        .lStartRow = M_L_START_ROW
-        .lKeyCol = M_L_MEMBER_COL
-        .lStartCol = M_L_MEMBER_COL
-        .lEndCol = M_L_MEMBER_COL
+    Set WordReplacer = New cWordReplacer
+    With WordReplacer
         .sReplaceWord = ""
         .sTargetWord = "?"
-        .ClearRangeContents
+        .replaceWords (m_siCreateProperty)
         .sTargetWord = " "
-        .ClearRangeContents
+        .replaceWords (m_siCreateProperty)
     End With
     
-    Set SeparateString = New cSeparateString
-    With SeparateString
-        .sWorksheetName = G_S_CREATE_PROPERTY_NAME
-        .lInputCol = M_L_MEMBER_COL
+    Set WordSeparater = New cWordSeparater
+    With WordSeparater
         .lSeparateType = E_SEPARATE_STRING.BETWEEN
-        .lStartRow = M_L_START_ROW
-        .lTargetCol = M_L_MEMBER_COL
         If Me.Range(G_S_CELL_NAME_TARHET_PROGRAM_LANGUAGE) = G_S_VBA Then
             .sFrontSeparateKey = "Dim"
             .sRearSeparateKey = "As"
@@ -133,7 +146,7 @@ Public Sub btnSeparateString_Click()
             .sFrontSeparateKey = "private"
             .sRearSeparateKey = ":"
         End If
-        Call .SeparateString
+        Call .SeparateString(m_siCreateProperty)
     End With
 End Sub
 
@@ -151,7 +164,9 @@ Public Sub btnCreatePropertyCode_Click()
     Dim sTargetCode As String
     Dim sTmpCode As String
     
-    lEndRow = Me.Cells(Me.Rows.Count, M_L_MEMBER_COL).End(xlUp).Row
+    Call init
+    
+    lEndRow = m_siCreateProperty.lEndRow
     Open ThisWorkbook.Path & M_S_CODE_FILE_NAME For Output As #1
     'property format
     For lCurRow = M_L_START_ROW To lEndRow
@@ -231,16 +246,20 @@ End Sub
 '@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub btnClear_Click()
-    Dim ClearContents As New cClearContents
-    Set ClearContents = New cClearContents
-    
-    With ClearContents
-        .sWorksheetName = Me.Name
-        .lStartRow = M_L_START_ROW
-        .lStartCol = M_L_MEMBER_COL
-        .lEndCol = M_L_PROPERTY_COL
-        .lKeyCol = M_L_MEMBER_COL
-        Call .ClearRangeContents
+    Call init
+
+    Dim RangeClearer As New cRangeClearer
+    With RangeClearer
+        Call .ClearRangeContents(m_siCreateProperty)
     End With
 End Sub
+
+
+
+
+
+
+
+
+
 
