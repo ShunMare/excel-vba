@@ -113,8 +113,6 @@ End Function
 '@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub SeparateString(ByVal siTarget As cSheetInfo)
-    Dim lEndRow As Long
-    
     If Not checkMyValue Then
         Exit Sub
     End If
@@ -141,7 +139,7 @@ Private Sub SeparateStringNormal(ByVal siTarget As cSheetInfo)
     For lCurRow = siTarget.lStartRow To siTarget.lEndRow
         vArray = Split(siTarget.ws.Cells(lCurRow, siTarget.lTargetCol), sSeparateKey)
         For lCntArray = LBound(vArray) To UBound(vArray)
-            siTarget.ws.Cells(lCurRow, siTarget.lTargetCol + lCntArray + 1) = vArray(lCntArray)
+            siTarget.ws.Cells(lCurRow, siTarget.lTargetCol + lCntArray) = Trim(vArray(lCntArray))
         Next
     Next lCurRow
 End Sub

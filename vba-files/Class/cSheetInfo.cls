@@ -288,10 +288,14 @@ End Sub
 '@return: NULL
 '--------------------------------------------------------------------------------
 Public Sub SetRowAndColInfo()
-    If 0 = m_lEndRow And checkMyValueRow Then
-        m_lEndRow = ws.Cells(ws.Rows.Count, m_lKeyCol).End(xlUp).Row
+    Dim rTarget As Range
+    
+    If 0 = m_lEndRow And checkMyValueRow And (0 <> m_lKeyCol) Then
+        Set rTarget = ws.Cells(ws.Rows.Count, m_lKeyCol).End(xlUp)
+        m_lEndRow = rTarget.Row + (rTarget.Rows.MergeArea.Count - 1)
     End If
-    If 0 = m_lEndCol And checkMyValueRow Then
-        m_lEndCol = ws.Cells(m_lKeyRow, ws.columns.Count).End(xlleft).column
+    If 0 = m_lEndCol And checkMyValueRow And (0 <> m_lKeyRow) Then
+        Set rTarget = ws.Cells(m_lKeyRow, ws.Columns.Count).End(xlToLeft)
+        m_lEndCol = rTarget.Column + (rTarget.MergeArea.Columns.Count - 1)
     End If
 End Sub
