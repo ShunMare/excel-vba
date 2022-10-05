@@ -38,7 +38,7 @@ Public Sub ClearRangeContents(siTarget As cSheetInfo)
     Dim rTarget As Range
 
     If Not checkMyValue Then
-        m_MessageShower.ShowErrorMessage (G_S_ERROR0000)
+        m_MessageShower.ShowCriticalMsg (G_S_MSG0000)
         Exit Sub
     End If
     

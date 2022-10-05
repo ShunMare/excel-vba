@@ -2,19 +2,20 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "cFileNameInputter"
+Attribute VB_Name = "cFileCreater"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+Const M_SHEET_NAME_DEFAULT As String = "default"
 Dim m_sTargetFolderPath As String
-Dim m_sFilterWord As String
-Dim m_sNotTargetWord As String
-Dim m_sTargetExtension As String
-Dim m_lTargetExtension As Long
-
+Dim m_sCopySheetName As String
+Dim m_sCreateFileName As String
+Dim m_sTargetExtension  As String
+Dim m_lTargetExtension  As Long
+Dim m_sChangeFileName  As String
 '--------------------------------------------------------------------------------
 '@brief : getter letter sTargetFolderPath
 '@param : NULL
@@ -29,29 +30,29 @@ Public Property Let sTargetFolderPath(ByVal vsTargetFolderPath As String)
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief : getter letter sFilterWord
+'@brief : getter letter sCopySheetName
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get sFilterWord() As String
-    sFilterWord = m_sFilterWord
+Public Property Get sCopySheetName() As String
+    sCopySheetName = m_sCopySheetName
 End Property
 
-Public Property Let sFilterWord(ByVal vsFilterWord As String)
-    m_sFilterWord = vsFilterWord
+Public Property Let sCopySheetName(ByVal vsCopySheetName As String)
+    m_sCopySheetName = vsCopySheetName
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief : getter letter sNotTargetWord
+'@brief : getter letter sCreateFileName
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Property Get sNotTargetWord() As String
-    sNotTargetWord = m_sNotTargetWord
+Public Property Get sCreateFileName() As String
+    sCreateFileName = m_sCreateFileName
 End Property
 
-Public Property Let sNotTargetWord(ByVal vsNotTargetWord As String)
-    m_sNotTargetWord = vsNotTargetWord
+Public Property Let sCreateFileName(ByVal vsCreateFileName As String)
+    m_sCreateFileName = vsCreateFileName
 End Property
 
 '--------------------------------------------------------------------------------
@@ -81,17 +82,17 @@ Public Property Let sTargetExtension(ByVal vsTargetExtension As String)
 End Property
 
 '--------------------------------------------------------------------------------
-'@brief : initialize
+'@brief : getter letter sChangeFileName
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Private Sub Class_initialize()
-    m_sTargetFolderPath = ""
-    m_sFilterWord = ""
-    m_sNotTargetWord = ""
-    m_sTargetExtension = ""
-End Sub
+Public Property Get sChangeFileName() As String
+    sChangeFileName = m_sChangeFileName
+End Property
 
+Public Property Let sChangeFileName(ByVal vsChangeFileName As String)
+    m_sChangeFileName = vsChangeFileName
+End Property
 '--------------------------------------------------------------------------------
 '@brief : get extension
 '@param : NULL
@@ -99,19 +100,27 @@ End Sub
 '--------------------------------------------------------------------------------
 Private Sub getExtention()
     Select Case lTargetExtension
-    Case E_EXTENSION.ALL
-        sTargetExtension = "*.*"
     Case E_EXTENSION.XLS
-        sTargetExtension = "*.xls"
+        sTargetExtension = ".xls"
     Case E_EXTENSION.XLSX
-        sTargetExtension = "*.xlsx"
+        sTargetExtension = ".xlsx"
     Case E_EXTENSION.XLSM
-        sTargetExtension = "*.xlsm"
+        sTargetExtension = ".xlsm"
     Case E_EXTENSION.TXT
-        sTargetExtension = "*.txt"
+        sTargetExtension = ".txt"
     Case E_EXTENSION.PDF
-        sTargetExtension = "*.pdf"
+        sTargetExtension = ".pdf"
     End Select
+End Sub
+'--------------------------------------------------------------------------------
+'@brief : initialize
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Private Sub Class_initialize()
+    m_sTargetFolderPath = ""
+    m_sCopySheetName = ""
+    m_sChangeFileName = ""
 End Sub
 
 '--------------------------------------------------------------------------------
@@ -128,66 +137,49 @@ Private Function checkMyValue()
 End Function
 
 '--------------------------------------------------------------------------------
-'@brief : input file name
+'@brief : create excel file
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Sub InputFileName(ByVal siTarget As cSheetInfo)
-    Dim sDirBuf As String
-    Dim lCurRow As Long
-
-    If Not checkMyValue Then
+Public Sub createExcelFile()
+    Dim sCreateFullPath As String
+    Dim wbCreate As Workbook
+    
+    Call getExtention
+    sCreateFullPath = sTargetFolderPath & "\" & sCreateFileName & sTargetExtension
+    If Dir(sCreateFullPath) <> "" Then
         Exit Sub
     End If
-    Call getExtention
-
-    sDirBuf = Dir(sTargetFolderPath & "\" & sTargetExtension)
-    lCurRow = siTarget.lStartRow
-    Do While sDirBuf <> ""
-        If (sNotTargetWord <> "") And (sDirBuf Like "*" & sNotTargetWord & "*") Then
-            GoTo Continue
-        End If
-        If sDirBuf Like "*" & sFilterWord & "*" Then
-            siTarget.ws.Cells(lCurRow, siTarget.lTargetCol).Value = sDirBuf
-            lCurRow = lCurRow + 1
-        End If
-Continue:
-        sDirBuf = Dir()
-    Loop
+    Set wbCreate = Workbooks.Add
+    wbCreate.Worksheets(1).Name = M_SHEET_NAME_DEFAULT
+    wbCreate.SaveAs sCreateFullPath
 End Sub
 
 '--------------------------------------------------------------------------------
-'@brief : get file name array
+'@brief : copy my sheet
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Function GetFileNameArray() As String()
-    Dim sDirBuf As String
-    Dim lCurRow As Long
-    Dim sFileNameArray() As String
-    Dim lCntArray As Long
+Public Sub copyMySheet()
+    Dim wbOpen As Workbook
     
-    If Not checkMyValue Then
-        Exit Function
-    End If
-    Call getExtention
+    Set wbOpen = Workbooks(sCreateFileName & sTargetExtension)
+    ThisWorkbook.Worksheets(sCopySheetName).Copy before:=wbOpen.Worksheets(1)
+    If sChangeFileName <> "" Then: wbOpen.Worksheets(1).Name = sChangeFileName
+    Application.DisplayAlerts = False
+    wbOpen.Worksheets(M_SHEET_NAME_DEFAULT).Delete
+    Application.DisplayAlerts = True
+    wbOpen.Save
+End Sub
 
-    lCntArray = 0
-    ReDim Preserve sFileNameArray(lCntArray)
-    sFileNameArray(lCntArray) = G_S_NOT_EXIST
-    sDirBuf = Dir(sTargetFolderPath & "\" & sTargetExtension)
-    Do While sDirBuf <> ""
-        If (sNotTargetWord <> "") And (sDirBuf Like "*" & sNotTargetWord & "*") Then
-            GoTo Continue
-        End If
-        If (sDirBuf Like "*" & sFilterWord & "*") Then
-            ReDim Preserve sFileNameArray(lCntArray)
-            sFileNameArray(lCntArray) = sDirBuf
-            lCntArray = lCntArray + 1
-        End If
-Continue:
-        sDirBuf = Dir()
-    Loop
-    GetFileNameArray = sFileNameArray
-End Function
-
+'--------------------------------------------------------------------------------
+'@brief : close created file
+'@param : NULL
+'@return: NULL
+'--------------------------------------------------------------------------------
+Public Sub closeCreatedFile()
+    Dim wbOpen As Workbook
+    
+    Set wbOpen = Workbooks(sCreateFileName & sTargetExtension)
+    wbOpen.Close
+End Sub
