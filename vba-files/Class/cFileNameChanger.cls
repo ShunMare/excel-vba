@@ -90,7 +90,7 @@ End Function
 '@param : NULL
 '@return: NULL
 '--------------------------------------------------------------------------------
-Public Sub CngFileName(ByVal siTarget As cSheetInfo)
+Public Sub ChangeFileName(ByVal siTarget As cSheetInfo)
     Dim lCurRow As Long
     Dim sTargetFilePath As String
     Dim sTargetFileName As String
