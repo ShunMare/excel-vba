@@ -1,14 +1,14 @@
 {
     "app_name": "XVBA",
     "description": "",
-    "author": "",
+    "author": "ShunMare",
     "email": "",
-    "create_ate": "Sun Sep 04 2022 11:39:48 GMT+0900 (Japan Standard Time)",
-    "excel_file": "Tool.xlsm",
+    "create_ate": "Wed Dec 28 2022 22:36:42 GMT+0900 (Japan Standard Time)",
+    "excel_file": "tool_vba.xlsm",
     "vba_folder": "vba-files",
     "ribbon_file": "customUI14",
     "ribbon_folder": "ribbons",
-    "logs": "on",
+    "logs": "off",
     "xvba_packages": {},
     "xvba_dev_packages": {}
 }
